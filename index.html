@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'logistic/css/home_style.css' %}"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: left;
+            font-size: 0.88em;
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px; /* Adjust as needed to control width */
+            margin: 0 auto; /* Align to the left */
+            padding: 10px;
+            background-color: white; /* Light gray or any color that looks like a border */
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 1.2em;
+            color: black;
+            text-decoration: underline;
+            margin-top: 1.5em;
+        }
+        h2 {
+            font-size: 1.3em;
+            color: black;
+            margin-top: 1.6em;
+            margin-bottom: 1.6em;
+        }
+        h3 {
+            font-size: 1em;
+            text-decoration: underline;
+            margin-bottom: 1.5em;
+        }
+        h4 {
+            font-size: 1em;
+            text-decoration: underline;
+            font-weight: normal;
+            margin-bottom: 1.2em;
+            margin-top: 1.2em;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: -10px;
+            margin-bottom: 1.5em;
+        }
+        ul ul {
+            list-style-type: circle;
+            margin-left: -18px;
+            margin-bottom: 1.0em;
+            margin-top: 0.8em;
+        }
+        ul ul ul {
+            list-style-type: square;
+            margin-left: -20px;
+            margin-bottom: 1em;
+        }
+        b {
+            font-weight: bold;
+        }
+        .code-block {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            margin: 0.5em 0;
+            font-family: monospace;
+            white-space: pre-wrap;     /* Allow wrapping of pre-formatted text */
+            word-break: break-all;     /* Break long words */
+            overflow-x: auto;          /* Add horizontal scroll if needed */
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-bottom: 30px;
+            margin-top: 25px;
+        }
+        pre {
+            margin-top: -2em;
+            margin-bottom: -2em;
+            margin-left: -8em;
+        }
+        .milestone {
+            border: 2px solid; /* Dark blue border */
+            background-color: floralwhite; /* Light blue background */
+            padding: 15px;
+            margin: 3em 0;
+            /* font-weight: bold; */
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .index {
+            /* border: 2px solid; Dark blue border */
+            background-color: whitesmoke; /* Light blue background */
+            padding: 15px;
+            margin: 3em 0;
+            /* font-weight: bold; */
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .mybtn {
+
+            background-color: floralwhite;
+            text-align: center;
+            display: block;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 3px 5px;
+            border:1px solid #000;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            /* font-weight: bold; */
+            transition: box-shadow 0.3s ease;
+            margin-bottom: 1.2em;
+            }
+
+        .mybtn:hover {
+            background-color: floralwhite;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+        .footer{
+            margin-top: 20%;
+            background:whitesmoke;
+            padding:30px 0px;
+            font-family: 'Play', sans-serif;
+            text-align:center;
+        }
+        .footer .row{
+            width:100%;
+            margin:1% 0%;
+            padding:0.6% 0%;
+            color:gray;
+            font-size:0.8em;
+        }
+        .footer .row a{
+            text-decoration:none;
+            /* color:gray; */
+            transition:0.5s;
+        }
+
+        .footer .row ul{
+
+            width:100%;
+
+        }
+
+        .footer .row ul li{
+
+            display:inline-block;
+            margin:0px 30px;
+
+        }
+
+        .footer .row a i{
+
+            font-size:2em;
+            margin:0% 1%;
+
+        }
+
+        @media (max-width:1200px){
+
+        .footer{
+
+        text-align:left;
+        padding:5%;
+        }
+        .footer .row ul li{
+        display:block;
+        margin:10px 0px;
+        text-align:left;
+        }
+        .footer .row a i{
+
+        margin:0% 3%;
+        }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav nav navbar-nav navbar-logo mr-auto">
+                <span><li><a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a></li></span>
+                <span><li><a class="nav-item nav-link" href="{% url 'login' %}">Login</a></li></span>
+                <span><li><a class="nav-item nav-link" href="{% url 'register' %}">Register</a></li></span>   
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav navbar-nav navbar-logo mr-auto"></ul>
+            <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        <h1><u>DJANGO INTERNALS</u></h1>
+        <p style="color: gray; margin-top: 1em;">May 24, 2025</p>
+        <div class="index">
+            <b>Contents</b>
+            <p style="margin-bottom: 0.9em;"></p>
+           <ul>
+              <li><a href="#Introduction">Introduction</a></li>
+              <li><a href="#State">State - Initialisation, Middleware and HTTP request</a></li>
+              <li><a href="#URLs">URLs</a></li>
+              <li><a href="#Views">Views</a></li>
+              <li><a href="#Templates">Templates</a></li>
+              <li><a href="#Additionally">Authentication, Forms and Models</a></li>
+            </ul>
+        </div>
+
+        <h2 id="Introduction">Introduction</h2>
+        <p style="color: gray; margin-bottom: 1.4em;"> Based on Django - v5.2</p>
+        <p>
+            We continue with our technical exploration
+        </p>
+        <h2 id="State">State - Initialisation, Middleware and HTTP request</h2>
+        <b>Initialisation</b>
+        <h4>An overview of the module handlers.base</h4>
+        <h4>Thread begins: WSGIHandler initialisation and error checking</h4>
+        <b>Middleware</b>
+        <h4>Data structures<h4>
+        <h4>Middleware initialisation - Thread resumes</h4>
+        <b>WSGIRequest and HttpRequest objects construction</b>
+        <h4>Thread resumes</h4>
+        <h2 id="URLs">URLs</h2>
+        <h4>Data structures</h4>
+        <h2 id="Views">Views</h2>
+        <h4>Data structures</h4>
+        <h2 id="Templates">Templates</h2>
+        <h4>Data structures</h4>
+        <h2 id="Additionaly">Authentication, Forms and Models</h2>
+        <h4>Data structures</h4>
+
