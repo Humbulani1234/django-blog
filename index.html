@@ -261,22 +261,74 @@
         </div>
          <hr style="margin-top: 3em;"></hr>
         <h2 id="State">State - Initialisation, Middleware and HTTP request</h2>
+        <p>
+            A desirable software product should be modelled based on minimal abstractions.
+            Django has a request/response lifecycle modelled by HttpRequest and HttpResponse
+            objects respectively, represnting its state. In this section, we discuss
+            Initialisation, Middleware and WSGIRequest and HttpRequest.
+        </p>
         <b>Initialisation</b>
         <h4>An overview of the module handlers.base</h4>
+        <p>
+            The module <span style="font-family:monospace; font-size:11.5px;">handelers.base
+            </span> defines the class <span style="font-family:monospace; font-size:11.5px;">
+            BaseHandler</span>; it is one of the most important classes as it elegantly exposes
+            Django's simplicity desgin. In this class, we load middleware, construct the famous
+            <span style="font-family:monospace; font-size:11.5px;">HttpRequest</span> object
+            used in views, and call <span style="font-family:monospace; font-size:11.5px;">
+            get_response</span>. This <span style="font-family:monospace; font-size:11.5px;">
+            get_response</span> process revolves around URL routing, calling an appropriate
+            view function, which in turn might use a template to construct the response content
+            to initialise the <span style="font-family:monospace; font-size:11.5px;">HttpResponse
+            </span> object. It does seem top be the central ortchestrator.
+        </p>
         <h4>Thread begins: WSGIHandler initialisation and error checking</h4>
+        <p>
+            The <span style="font-family:monospace; font-size:11.5px;">get_wsgi_application</span>
+            function which invokes setup function that is responsible for registering Django
+            application and models. It proceeds as follows:
+        </p>
         <b>Middleware</b>
+        <p style="margin-top: 1.2em;">
+            Middleware is characterised by hooks, which are callable used to intercept the 
+            request/response cycle. The most common being <span style="font-family:monospace; font-size:11.5px;">
+            process_request</span> and <span style="font-family:monospace; font-size:11.5px;">
+            process_response</span> eexcuted before and after a call to construct the response
+            respectively.
+        </p>
         <h4>Data structures<h4>
         <h4>Middleware initialisation - Thread resumes</h4>
+        <p>
+            When the method <span style="font-family:monospace; font-size:11.5px;">load_middlware
+            </span> is invoked, it proceeds as follows:
+        </p>
+        <ul>
+            <li>
+                Defines and populates the list attributes: view_middlware, which holds different
+                middlware classes. It populates them by examing the
+            </li>
+        </ul>
         <b>WSGIRequest and HttpRequest objects construction</b>
         <h4>Thread resumes</h4>
          <hr style="margin-top: 3em;"></hr>
         <h2 id="URLs">URLs</h2>
+        <p>
+            URLs are what users use to request resources from the application
+        </p>
         <h4>Data structures</h4>
          <hr style="margin-top: 3em;"></hr>
         <h2 id="Views">Views</h2>
+        <p>
+            Views serve as the logical component of the request/response cycle by handling the
+            requirements of the business logic.
+        </p>
         <h4>Data structures</h4>
          <hr style="margin-top: 3em;"></hr>
         <h2 id="Templates">Templates</h2>
+        <p>
+            Parsing and Lexical analysis have well been studied in computer science, including
+            compiling.
+        </p>
         <h4>Data structures</h4>
          <hr style="margin-top: 3em;"></hr>
         <h2 id="Additionaly">Authentication, Forms and Models</h2>
