@@ -76,9 +76,6 @@
             margin-left: -20px;
             margin-bottom: 1em;
         }
-        b {
-            font-weight: bold;
-        }
         .code-block {
             background-color: #f0f0f0;
             border: 1px solid #ccc;
@@ -198,7 +195,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -235,8 +232,33 @@
         <h2 id="Introduction">Introduction</h2>
         <p style="color: gray; margin-bottom: 1.4em;"> Based on Django - v5.2</p>
         <p>
-            We continue with our technical exploration
+            We continue with our technical exploration from the article: Gunicorn internals,
+            by providing a techical case study of Django internals, focusing mainly on its
+            subsystems, including but not limited to: HTTP Request and Response lifecycle,
+            State management, Middleware, URL Routing, Views, and Template rendering.
+            Additinally, Models, Forms and Authentication will alo be discussed if neccessary.
         </p>
+        <p>
+            We extend the tracing process developed in Gunicorn internals into Django, and
+            follow through the WSGI request object received until a response object has been
+            constructed.
+        </p>
+        <b>The Browser and URL</b>
+        <h4>The URL</h4>
+        <p style="margin-top: 1.2em;">
+            The following is the URL with which we will continue our tracing into Django
+            application, it accesses the home page.
+
+        </p>
+        <div class="code-block">
+            <pre style="text-align: center; margin-left: 0em; font-size: 12px;">http://13.247.175.114/
+            </pre>
+        </div>
+        <h4>The Browser HTTP Request</h4>
+        <div class="code-block">
+            <pre style="text-align: center; margin-left: 0em; font-size: 12px;">http://13.247.175.114/
+            </pre>
+        </div>
         <h2 id="State">State - Initialisation, Middleware and HTTP request</h2>
         <b>Initialisation</b>
         <h4>An overview of the module handlers.base</h4>
