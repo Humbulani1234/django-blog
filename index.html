@@ -251,12 +251,12 @@
 
         </p>
         <div class="code-block">
-            <pre style="text-align: center; margin-left: 0em; font-size: 12px;">http://13.247.175.114/
+            <pre style="text-align: center; margin-left: 0em; font-size: 12px;">http://13.247.175.114
             </pre>
         </div>
         <h4>The Browser HTTP Request</h4>
         <div class="code-block">
-            <pre style="text-align: center; margin-left: 0em; font-size: 12px;">
+            <pre>
                 Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
                 accept-encoding: gzip, deflate
                 accept-language: en-US,en;q=0.9
@@ -294,16 +294,48 @@
         <h4>Thread begins: WSGIHandler initialisation and error checking</h4>
         <p>
             The <span style="font-family:monospace; font-size:11.5px;">get_wsgi_application</span>
-            function which invokes setup function that is responsible for registering Django
-            application and models. It proceeds as follows:
+            function which invokes <span style="font-family:monospace; font-size:11.5px;">setup</span>
+            function that is responsible for registering Django application and models. It proceeds
+            as follows:
         </p>
+        <ul>
+            <li>
+                Configures logging using <span style="font-family:monospace; font-size:11.5px;">
+                settings.LOGGING</span> variable from the <span style="font-family:monospace; font-size:11.5px;">
+                settings</span> configuration file.
+            </li>
+            <li>
+                Invokes <span style="font-family:monospace; font-size:11.5px;">populate</span> from the
+                apps global variable of the module apps - the varaible represents the Apps class.
+            </li>
+        </ul>
+        <p>
+            <span style="font-family:monospace; font-size:11.5px;">get_wsgi_application</span> then calls
+            <span style="font-family:monospace; font-size:11.5px;">WSGIHandler.__init__</span> to initialise
+            the WSGIHandler instance, and it proceeds as follows: 
+        </p>
+        <ul>
+            <li>
+                Calls <span style="font-family:monospace; font-size:11.5px;">BaseHandler.__init__</span>
+                special method.
+            </li>
+            <li>
+                Invokes <span style="font-family:monospace; font-size:11.5px;">load_middleware</span>
+                method. Thread paused, conitunes in the middleware section below.
+            </li>
+        </ul>
         <b>Middleware</b>
         <p style="margin-top: 1.2em;">
             Middleware is characterised by hooks, which are callable used to intercept the 
             request/response cycle. The most common being <span style="font-family:monospace; font-size:11.5px;">
             process_request</span> and <span style="font-family:monospace; font-size:11.5px;">
             process_response</span> eexcuted before and after a call to construct the response
-            respectively.
+            respectively. There are of course other hooks available such as:
+            <span style="font-family:monospace; font-size:11.5px;">process_view</span>,
+            <span style="font-family:monospace; font-size:11.5px;">process_template_response</span>
+            and <span style="font-family:monospace; font-size:11.5px;">process_exception</span> which
+            are stacked into appropriate data structures during initialisation. The process will be
+            eleborated more thoroughly, with an example, in the section below.
         </p>
         <h4>Data structures<h4>
         <h4>Middleware initialisation - Thread resumes</h4>
@@ -314,41 +346,118 @@
         <ul>
             <li>
                 Defines and populates the list attributes: view_middlware, which holds different
-                middlware classes. It populates them by examing the
+                middlware classes. It populates them by examining the attributes and methods of the
+                middlware class instance in question. It looks for methods/hooks outlined above and then
+                populates the corresponding list data structures constructing a stack to be executed.
+                Let's demonstrate exactly how this process works with an example, i.e., the 
+                <span style="font-family:monospace; font-size:11.5px;">CsrfViewMiddleware</span> class.
+            </li>
+            <ul>
+                <li>
+                    The global variable <span style="font-family:monospace; font-size:11.5px;">MIDDLEWARE</span>
+                    from the python <span style="font-family:monospace; font-size:11.5px;">setting</span>
+                    configuration file defines the Middleware classes that Django must process and
+                    include.
+                </li>
+                <li>
+                    From the above middleware variable, each middleware class will be examined for its methods
+                    and attributes as briefly outlined above. For the <span style="font-family:monospace;
+                    font-size:11.5px;">CsrfViewMiddleware</span>, it will appended into the list:
+                </li>
+            </ul>
+        </ul>
+        <p>
+            <span style="font-family:monospace; font-size:11.5px;">get_wsgi_application</span> will
+            eventually returns an initialised <span style="font-family:monospace; font-size:11.5px;">
+            WSGIHandler</span> object, which is a callable. To construct the Django
+            <span style="font-family:monospace; font-size:11.5px;">HttpRequest</span> object, the 
+            special method <span style="font-family:monospace; font-size:11.5px;">WSGIHandler.__call__</span>
+            will be invoked, Thread paused and continues below.
+        </p>
+        <b>WSGIRequest and HttpRequest objects construction</b>
+        <h4>Data structures</h4>
+        <h4>Thread resumes</h4>
+        <p>The special method <span style="font-family:monospace; font-size:11.5px;">
+            WSGIHandler.__call__</span> proceeds as follows:
+        </p>
+        <ul>
+            <li>
+                Receives the argument <span style="font-family:monospace; font-size:11.5px;">
+                environ</span>, which is a WSGI object from Gunicorn.
+            </li>
+            <h4>environ</h4>
+            <div class="code-block">
+                <pre>
+                    {
+                    "wsgi.errors": WSGIErrorsWrapper(cfg),
+                    "wsgi.version": (1, 0),
+                    "wsgi.multithread": False,
+                    "wsgi.multiprocess": (cfg.workers > 1),
+                    "wsgi.run_once": False,
+                    "wsgi.file_wrapper": FileWrapper,
+                    "wsgi.input_terminated": True,
+                    "SERVER_SOFTWARE": SERVER_SOFTWARE,
+                    }
+
+                    {
+                    "wsgi.input": req.body,
+                    "gunicorn.socket": sock,
+                    "REQUEST_METHOD": req.method,
+                    "QUERY_STRING": req.query,
+                    "RAW_URI": req.uri,
+                    "SERVER_PROTOCOL": "HTTP/%s" % ".".join([str(v) for v in req.version])
+                    }
+                </pre>
+            </div>
+            <li>
+                  
             </li>
         </ul>
-        <b>WSGIRequest and HttpRequest objects construction</b>
-        <h4>Thread resumes</h4>
-         <hr style="margin-top: 3em;"></hr>
+        <hr style="margin-top: 3em;"></hr>
         <h2 id="URLs">URLs</h2>
         <p>
             URLs are what users use to request resources from the application
         </p>
         <h4>Data structures</h4>
-         <hr style="margin-top: 3em;"></hr>
+        <h4>Thread resumes</h4>
+        <p>
+            The method <span style="font-family:monospace; font-size:11.5px;">_get_response</span>
+            calls the method <span style="font-family:monospace; font-size:11.5px;">
+            resolve_request</span> which proceeds as follows:
+        </p>
+        <hr style="margin-top: 3em;"></hr>
         <h2 id="Views">Views</h2>
         <p>
             Views serve as the logical component of the request/response cycle by handling the
-            requirements of the business logic.
+            requirements of the business logic. In this section, we focus mainly on demystifying how
+            Class based views work; function views are pretty straight foward since they do not
+            involve extensive boilerplate code to hide functionality. Class based views demands less 
+            code and we want to unravel how the process works.
         </p>
         <h4>Data structures</h4>
-         <hr style="margin-top: 3em;"></hr>
+        <h4><span style="font-family:monospace; font-size:11.5px;">View.as_view</span> method</h4>
+        <hr style="margin-top: 3em;"></hr>
         <h2 id="Templates">Templates</h2>
         <p>
             Parsing and Lexical analysis have well been studied in computer science, including
             compiling.
         </p>
         <h4>Data structures</h4>
-         <hr style="margin-top: 3em;"></hr>
+        <h4>Thread resumes</h4>
+        <p>
+            The function <span style="font-family:monospace; font-size:11.5px;">render</span> proceeds
+            as follows:
+        </p>
+        <hr style="margin-top: 3em;"></hr>
         <h2 id="Additionaly">Authentication, Forms and Models</h2>
         <h4>Data structures</h4>
          <hr style="margin-top: 3em;"></hr>
          <div cass="index">
             <h2>Related Articles</h2>
             <p style="margin-bottom: 0.9em;"></p>
-            <div class="mybtn"><a href="https://keras.io/examples/structured_data/class_with_grn_and_vsn_with_hyperparameters_tuning/">Keras Example</a></div>
+            <div class="mybtn"><a href="https://humbulani1234.github.io/blog/">Gunicorn Internals</a></div>
             <div class="mybtn"><a href="http://13.247.175.114/pdfs/combined_total.pdf">
-                Gunicorn Internals    
+                Large Codebases   
             </a></div>
             <hr style="margin-top: 3em;"></hr>
         </div>
